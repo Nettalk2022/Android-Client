@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             //radio button에 따라 다른 event 적용
                             if (every_state == 0){ //전체대화라면
-                                sendWriter.println(sendmsg);
+                                sendWriter.println("/a"+sendmsg);
                                 System.out.println("Send: " + sendmsg);
                                 message.setText("");
                             }else{//귓속말을 선택했을 경우
