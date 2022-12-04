@@ -5,6 +5,7 @@ import static java.lang.Boolean.TRUE;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -251,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             chatView.setText(chatView.getText().toString()+msg+"\n");
+            chatView.setTextColor(Color.parseColor("423630"));
         }
     }
 }
