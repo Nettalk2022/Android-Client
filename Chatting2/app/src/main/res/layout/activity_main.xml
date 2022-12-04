@@ -7,26 +7,132 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
-    <EditText
-        android:id="@+id/message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter message"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chatbutton"
-        android:text="chat"/>
-
-    <TextView
-        android:id="@+id/chatView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:background="@color/teal_200"/>
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/greeting_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OO"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="님 반갑습니다! 즐거운 채팅하세요 ~ "/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="접속 인원 수    :   "/>
+            <TextView
+                android:id="@+id/count_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/black"/>
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:checkedButton="@id/every_talk">
+            <RadioButton
+                android:id="@+id/personal_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="귓속말"
+                android:layout_marginEnd="20dp"/>
+            <RadioButton
+                android:id="@+id/every_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체말"
+                android:layout_marginEnd="20dp"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="접속자 목록:  "
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="10dp"/>
+
+        <ListView
+            android:id="@+id/personListView"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/teal_700"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="chatting Room 대화:  "
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="10dp"/>
+
+
+        <TextView
+            android:id="@+id/chatView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/teal_200"/>
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Enter message"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/exitbutton"
+                android:layout_marginRight="30dp"
+                android:text="exit"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chatbutton"
+                android:text="chat"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
