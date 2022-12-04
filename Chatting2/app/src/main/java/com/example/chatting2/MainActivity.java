@@ -5,6 +5,7 @@ import static java.lang.Boolean.TRUE;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radio_group); //귓속말, 전체 채팅 radiogroup
 
         list = new ArrayList<>(20);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<>(this, R.layout.my_list_item, list);
         //list.add("*** 접속자 목록 ***");
 
         personlistView = (ListView) findViewById(R.id.personListView);
@@ -251,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             chatView.setText(chatView.getText().toString()+msg+"\n");
+            // chatView.setTextColor(Color.WHITE);
         }
     }
 }
