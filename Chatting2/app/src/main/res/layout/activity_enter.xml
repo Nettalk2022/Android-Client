@@ -9,6 +9,7 @@
     android:gravity="center"
     tools:context=".EnterActivity">
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,8 +41,19 @@
                 android:hint="Enter host address"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Host 주소 :          "/>
+        <EditText
+            android:id="@+id/host_address"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
@@ -57,8 +69,14 @@
                 android:hint="Enter port number"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
@@ -75,9 +93,22 @@
                 android:hint="Enter user name"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="40dp">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="User 이름 :                "/>
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
             android:orientation="horizontal"
             android:gravity="center">
             <Button
@@ -102,4 +133,5 @@
                 android:paddingRight="50dp"
                 android:text="종료"/>
         </LinearLayout>
+
 </LinearLayout>
