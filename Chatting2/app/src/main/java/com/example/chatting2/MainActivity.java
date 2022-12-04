@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             chatView.setText(chatView.getText().toString()+msg+"\n");
-            // chatView.setTextColor(Color.WHITE);
+
         }
     }
 }
