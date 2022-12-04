@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,6 +29,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
@@ -34,32 +40,30 @@ public class MainActivity extends AppCompatActivity {
     private String ip; //"175.195.237.59"
     private int port;
 
-    TextView textView;
+    TextView greeting_username;
     String UserID;
-    Button connectbutton;
-    Button chatbutton;
+    Button chatbutton, exitbutton;
     TextView chatView;
     EditText message;
     String sendmsg;
     String read;
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        try {
-            sendWriter.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    int count=0;
+    TextView count_people;
+
+    List<String> list;
+    ArrayAdapter<String> adapter;
+    ListView personlistView;
+
+    //server connect
+    String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mHandler = new Handler();
-        textView = (TextView) findViewById(R.id.textView);
+        greeting_username = (TextView) findViewById(R.id.greeting_username);
         chatView = (TextView) findViewById(R.id.chatView);
         message = (EditText) findViewById(R.id.message);
         Intent intent = getIntent();
@@ -67,8 +71,18 @@ public class MainActivity extends AppCompatActivity {
         ip = intent.getStringExtra("host");
         port = intent.getIntExtra("port",8000);
         UserID = intent.getStringExtra("username");
-        textView.setText(UserID);
+        greeting_username.setText(UserID);
         chatbutton = (Button) findViewById(R.id.chatbutton);
+        exitbutton = (Button) findViewById(R.id.exitbutton);
+
+        count_people= (TextView)findViewById(R.id.count_people);
+
+        list = new ArrayList<>(20);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        list.add("*** 접속자 목록 ***");
+
+        personlistView = (ListView) findViewById(R.id.personListView);
+        personlistView.setAdapter(adapter);
 
         new Thread() {
             public void run() {
@@ -82,9 +96,36 @@ public class MainActivity extends AppCompatActivity {
                         read = input.readLine();
                         if(read!=null){
                             //들어올때
-                            if(read.indexOf("/f")==0){}
+                            if(read.indexOf("/f")==0){
+                                user = read.substring(2);
+                                System.out.println("123 :" + user);
+
+                                addName(user);
+                                mHandler.post(new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        count++;
+                                        count_people.setText(String.valueOf(count));
+                                        refreshList();
+                                    }
+                                });
+                            }
                             //나갈때
-                            else if(read.indexOf("/e")==0){}
+                            else if(read.indexOf("/e")==0){
+                                user = read.substring(2);
+
+                                //Toast.makeText(getApplicationContext(),"나감"+count,Toast.LENGTH_LONG).show();
+                                removeName(user);
+                                //handler 사용해서 ui 변경
+                                mHandler.post(new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        count--;
+                                        count_people.setText(String.valueOf(count));
+                                        refreshList();
+                                    }
+                                });
+                            }
                             else{
                             mHandler.post(new msgUpdate(read));
                             }
@@ -107,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("보냄  : " + sendmsg);
                             sendWriter.flush();
                             message.setText("");
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -114,6 +156,45 @@ public class MainActivity extends AppCompatActivity {
                 }.start();
             }
         });
+
+        //exit 버튼 클릭 -> 종료
+        exitbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                {System.exit(1);}
+            }
+        });
+    }
+
+    //-------------------------------리스트에 이름추가-------------------
+    public void addName(String user){
+        System.out.println(user+"came in");
+        list.add(user);
+    }
+    public void removeName(String user){
+        System.out.println(user+"went out");
+        list.remove(user);
+    }
+
+    //동적으로 list 변환 수행
+    public void refreshList(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                personlistView.invalidateViews();
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {  //앱 종료시
+        super.onStop();
+        try {
+            socket.close(); //소켓을 닫는다.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     class msgUpdate implements Runnable{
