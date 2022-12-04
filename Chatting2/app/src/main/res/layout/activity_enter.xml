@@ -5,8 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_yellow"
     android:gravity="center"
     tools:context=".EnterActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="40dp"
+            android:textColor="@color/btn_brown"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="80dp"
+            android:text="NETTALK">
+
+        </TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,6 +36,7 @@
                 android:id="@+id/host_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/btn_brown"
                 android:hint="Enter host address"/>
         </LinearLayout>
 
@@ -37,6 +53,7 @@
                 android:id="@+id/port_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/btn_brown"
                 android:hint="Enter port number"/>
         </LinearLayout>
 
@@ -49,11 +66,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User 이름 :          "/>
+                android:text="User 이름 :                "/>
             <EditText
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/btn_brown"
                 android:hint="Enter user name"/>
         </LinearLayout>
 
@@ -68,6 +86,9 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
+                android:backgroundTint="@color/btn_brown"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:text="접속"/>
 
             <Button
@@ -75,6 +96,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                android:backgroundTint="@color/btn_brown"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:text="종료"/>
         </LinearLayout>
 </LinearLayout>
