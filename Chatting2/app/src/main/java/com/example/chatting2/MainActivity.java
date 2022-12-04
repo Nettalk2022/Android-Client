@@ -1,5 +1,7 @@
 package com.example.chatting2;
 
+import static java.lang.Boolean.TRUE;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,10 +11,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Button chatbutton, exitbutton;
     TextView chatView;
     EditText message;
-    String sendmsg;
+
     String read;
 
     int count=0;
@@ -54,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
     List<String> list;
     ArrayAdapter<String> adapter;
     ListView personlistView;
+    RadioGroup radioGroup;
 
     //server connect
-    String user;
+    String user, sendmsg;
+    String name_;
+    int every_state=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +83,43 @@ public class MainActivity extends AppCompatActivity {
         exitbutton = (Button) findViewById(R.id.exitbutton);
 
         count_people= (TextView)findViewById(R.id.count_people);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group); //귓속말, 전체 채팅 radiogroup
 
         list = new ArrayList<>(20);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        list.add("*** 접속자 목록 ***");
+        //list.add("*** 접속자 목록 ***");
 
         personlistView = (ListView) findViewById(R.id.personListView);
         personlistView.setAdapter(adapter);
+
+        //귓속말로 선택한 대상의 이름 받기 위함 (listview 아이템 클릭시) 초기화됨
+        personlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView,
+                                    View view, int position, long id) {
+
+                //클릭한 아이템의 문자열을 가져옴
+                name_ = (String)adapterView.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),"대화상대 "+name_+" 으로 선택",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //radio button에 따라 다른 event 적용
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.personal_talk) {//귓속말을 선택했을 경우
+                    every_state=1;
+                    Toast.makeText(getApplicationContext(),"귓속말 선택:"+every_state,Toast.LENGTH_LONG).show();
+
+                }
+                else{ //전체말을 선택했을 경우
+                    every_state=0;
+                    Toast.makeText(getApplicationContext(),"전체 대화 선택:"+every_state,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         new Thread() {
             public void run() {
@@ -144,11 +181,20 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         super.run();
                         try {
-                            sendWriter.println(sendmsg);
-                            System.out.println("보냄  : " + sendmsg);
-                            sendWriter.flush();
-                            message.setText("");
-
+                            //radio button에 따라 다른 event 적용
+                            if (every_state == 0){ //전체대화라면
+                                sendWriter.println(sendmsg);
+                                System.out.println("Send: " + sendmsg);
+                                message.setText("");
+                            }else{//귓속말을 선택했을 경우
+                                try {
+                                    sendWriter.println(("/s" + name_ + "-" + sendmsg));
+                                    System.out.println("보냄  : /s" + name_ + "-" + sendmsg);
+                                    chatView.append(name_+ "님께 보내는 귓말 ▶▶ " + sendmsg + "\n");
+                                    message.setText("");
+                                }catch (Exception e) {
+                                    e.printStackTrace();}
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -156,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 }.start();
             }
         });
+
 
         //exit 버튼 클릭 -> 종료
         exitbutton.setOnClickListener(new View.OnClickListener() {
